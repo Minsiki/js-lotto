@@ -1,30 +1,32 @@
 export default class LottoPurchaseForm {
-    lottoPurchase;
+    props;
+    $element;
 
     constructor(props) {
-        this.onPurchase = props.onPurchase;
+        this.props = props;
         this.$element = document.querySelector("#lotto-purchase-area");
         this.#render();
         this.#mounted();
     }
 
     #render() {
-        this.$element.innerHTML = this.#getTemplate();
+        this.$element.replaceChildren();
+        this.$element.insertAdjacentHTML("afterbegin", this.#getTemplate());
     }
 
     #mounted() {
         this.purchasePriceInput = document.querySelector("#purchase-price-input");
-        this.purchasePriceSubmit = document.querySelector("#purchase-price-submit");
-
-        this.purchasePriceInput.addEventListener("keyup", (event) =>
-            this.#onPurchaseInputKeyup(event)
-        );
-        this.purchasePriceSubmit.addEventListener("click", () => this.#onPurchaseSubmitClick());
+        document.querySelector("#purchase-price-submit").addEventListener("click", () => {
+            this.#onPurchaseSubmitClick();
+        });
+        document.querySelector("#purchase-form").addEventListener("submit", (event) => {
+            this.#onSubmit(event);
+        });
     }
 
     #getTemplate() {
         return `
-        <form class="mt-5" onsubmit="return false">
+        <form id="purchase-form" class="mt-5" >
             <label class="mb-2 d-inline-block">구입할 금액을 입력해주세요. </label>
             <div class="d-flex">
                 <input
@@ -38,21 +40,17 @@ export default class LottoPurchaseForm {
                 />
                 <button type="button" data-test="purchase-button" id="purchase-price-submit" class="btn btn-cyan">확인</button>
             </div>
-        </form>`;
-    }
-
-    #onPurchaseInputKeyup(event) {
-        if (event.key === "Enter") {
-            this.#onSubmit();
-        }
+        </form>
+        `;
     }
 
     #onPurchaseSubmitClick() {
-        this.#onSubmit();
+        this.props.onPurchase(this.purchasePriceInput.value);
     }
 
-    #onSubmit() {
-        this.onPurchase(this.purchasePriceInput.value);
+    #onSubmit(event) {
+        event.preventDefault();
+        this.#onPurchaseSubmitClick();
     }
 
     onReset() {

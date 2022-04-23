@@ -1,15 +1,18 @@
 export default class LottoTicketsForm {
     lottos;
-
+    $lottoAmountArea;
+    $lottoTicketArea;
+    isChecked;
     constructor() {
+        this.isChecked = false;
         this.$lottoAmountArea = document.querySelector("#lotto-amount-area");
         this.$lottoTicketArea = document.querySelector("#lotto-ticket-area");
-        this.isChecked = false;
     }
 
     render() {
-        this.$lottoAmountArea.innerHTML = this.#getLottoAmountTemplate();
-        this.$lottoTicketArea.innerHTML = this.#getLottoTicketsTemplate();
+        this.onReset();
+        this.$lottoAmountArea.insertAdjacentHTML("afterbegin", this.#getLottoAmountTemplate());
+        this.$lottoTicketArea.insertAdjacentHTML("afterbegin", this.#getLottoTicketsTemplate());
     }
 
     mounted() {
@@ -38,9 +41,7 @@ export default class LottoTicketsForm {
         }</span>개를 구매하였습니다.</label>
         <div class="flex-auto d-flex justify-end pr-1">
             <label class="switch" data-test="switch">
-                <input type="checkbox" class="lotto-numbers-toggle-button" ${
-                    this.isChecked ? "checked" : ""
-                }/>
+                <input type="checkbox" class="lotto-numbers-toggle-button" ${this.isChecked ? "checked" : ""}/>
                 <span class="text-base font-normal">번호보기</span>
             </label>
         </div>
@@ -63,7 +64,7 @@ export default class LottoTicketsForm {
     }
 
     onReset() {
-        this.$lottoAmountArea.innerHTML = "";
-        this.$lottoTicketArea.innerHTML = "";
+        this.$lottoAmountArea.replaceChildren();
+        this.$lottoTicketArea.replaceChildren();
     }
 }
