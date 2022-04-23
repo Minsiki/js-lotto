@@ -1,5 +1,4 @@
-import LottoPurchaseRangeException from "../exceptions/LottoPurchaseRangeException.js";
-import LottoPurchaseUnitException from "../exceptions/LottoPurchseUnitException.js";
+import { PurchseException } from "../exceptions/PurchaseException.js";
 import LottoMachine from "./LottoMachine.js";
 
 export default class LottoShop {
@@ -9,11 +8,12 @@ export default class LottoShop {
 
     static buy(price) {
         LottoShop.validate(price);
-        return Array.from({ length:  Math.floor(price / LottoShop.LOTTO_UNIT) }).map(LottoMachine.autoPick);
+        return Array.from({ length: Math.floor(price / LottoShop.LOTTO_UNIT) }).map(LottoMachine.autoPick);
     }
 
     static validate(price) {
-        if(price < LottoShop.PURCHASE_MIN_PRICE || price > LottoShop.PURCHASE_MAX_PRICE) throw new LottoPurchaseRangeException();
-        if(price % LottoShop.LOTTO_UNIT !== 0) throw new LottoPurchaseUnitException();
+        if (price < LottoShop.PURCHASE_MIN_PRICE || price > LottoShop.PURCHASE_MAX_PRICE)
+            throw PurchseException.outOfRangePurchasePrice();
+        if (price % LottoShop.LOTTO_UNIT !== 0) throw PurchseException.notMatchPurchaseUnit();
     }
 }

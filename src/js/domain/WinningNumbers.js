@@ -1,29 +1,23 @@
-import DuplicateBonusNumberException from "../exceptions/DuplicateBonusNumberException.js";
-import DuplicationWinningNumberException from "../exceptions/DuplicateWinningNumberException.js";
-import NotExistBonusNumberException from "../exceptions/NotExitstBonusNumberException.js";
-import OutOfRangeBonusNumberException from "../exceptions/OutOfRangeBonusNumberException.js";
-import OutOfRangeWinningNumberException from "../exceptions/OutOfRangeWinningNumberException.js";
-import WinnerNumberLengthException from "../exceptions/WinnerNumberLengthException.js";
+import { WinningNumberException } from "../exceptions/WinningNumberException.js";
 import LottoNumber from "./LottoNumber.js";
 
 export default class WinningNumbers {
     static validate(winningNumbers, bonusNumber) {
-        if (winningNumbers.length < LottoNumber.LOTTO_LENGTH)
-            throw new WinnerNumberLengthException();
+        if (winningNumbers.length < LottoNumber.LOTTO_LENGTH) throw WinningNumberException.notExistWinningNumber();
 
-        if (!bonusNumber) throw new NotExistBonusNumberException();
+        if (!bonusNumber) throw WinningNumberException.notExistBonusNumber();
 
         for (let i = 0; i < winningNumbers.length; i++) {
             if (winningNumbers[i] < LottoNumber.MIN || winningNumbers[i] > LottoNumber.MAX)
-                throw new OutOfRangeWinningNumberException();
+                throw WinningNumberException.outOfRangeWinningNumber();
         }
 
         if (winningNumbers.length !== new Set(winningNumbers).size)
-            throw new DuplicationWinningNumberException();
+            throw WinningNumberException.duplicateWinningNumber();
 
-        if (winningNumbers.includes(bonusNumber)) throw new DuplicateBonusNumberException();
+        if (winningNumbers.includes(bonusNumber)) throw WinningNumberException.duplicateBonusNumber();
 
         if (bonusNumber < LottoNumber.MIN || bonusNumber > LottoNumber.MAX)
-            throw new OutOfRangeBonusNumberException();
+            throw WinningNumberException.outOfRangeBonusNumber();
     }
 }
