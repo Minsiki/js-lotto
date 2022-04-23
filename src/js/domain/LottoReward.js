@@ -1,9 +1,15 @@
 import LottoShop from "./LottoShop.js";
-import Winning from "./Winning.js";
 
 export default class LottoReward {
     rate;
     winnings;
+
+    static getWinning(count, price) {
+        return {
+            count: count,
+            price: price,
+        };
+    }
 
     constructor() {
         this.setWinnings();
@@ -11,14 +17,14 @@ export default class LottoReward {
 
     setWinnings() {
         this.winnings = {
-            0: Winning.getWinning(0, 0),
-            1: Winning.getWinning(0, 0),
-            2: Winning.getWinning(0, 0),
-            3: Winning.getWinning(0, 5_000),
-            4: Winning.getWinning(0, 50_000),
-            5: Winning.getWinning(0, 1_500_000),
-            "5+": Winning.getWinning(0, 30_000_000),
-            6: Winning.getWinning(0, 2_000_000_000),
+            0: LottoReward.getWinning(0, 0),
+            1: LottoReward.getWinning(0, 0),
+            2: LottoReward.getWinning(0, 0),
+            3: LottoReward.getWinning(0, 5_000),
+            4: LottoReward.getWinning(0, 50_000),
+            5: LottoReward.getWinning(0, 1_500_000),
+            "5+": LottoReward.getWinning(0, 30_000_000),
+            6: LottoReward.getWinning(0, 2_000_000_000),
         };
     }
 
