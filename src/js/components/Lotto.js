@@ -7,32 +7,38 @@ import LottoTicketsForm from "./LottoTicketsForm.js";
 import WinningLottoForm from "./WinningLottoForm.js";
 
 export default class Lotto {
-    price;
     lottos;
     winningNumbers;
     bonusNumber;
     rating;
     rate;
 
+    components = {};
+    domains = {};
+
     constructor() {
-        this.lottoPurchaseForm = new LottoPurchaseForm({
-            onPurchase: (price) => this.onPurchase(price),
-        });
-        this.lottoTicketsForm = new LottoTicketsForm();
-        this.lottoTickets = new LottoTickets();
-        this.winningLottoForm = new WinningLottoForm({
-            onReward: (winningNumber, bonusNumber) => this.onReward(winningNumber, bonusNumber),
-        });
-        this.lottoModal = new LottoModal({
-            onReset: () => this.onReset(),
-        });
-        this.lottoReward = new LottoReward();
+        this.components = {
+            lottoPurchaseForm: new LottoPurchaseForm({
+                onPurchase: (price) => this.onPurchase(price),
+            }),
+            lottoTicketsForm: new LottoTicketsForm(),
+            winningLottoForm: new WinningLottoForm({
+                onReward: (winningNumber, bonusNumber) => this.onReward(winningNumber, bonusNumber),
+            }),
+            lottoModal: new LottoModal({
+                onReset: () => this.onReset(),
+            }),
+        };
+
+        this.domains = {
+            lottoTickets: new LottoTickets(),
+            lottoReward: new LottoReward(),
+        };
     }
 
     onPurchase(price) {
         try {
-            this.price = price;
-            this.lottoTickets.tickets = LottoShop.buy(this.price);
+            this.domains.lottoTickets.tickets = LottoShop.buy(price);
 
             this.onLoadLottoTicketForm();
             this.onLoadWinningForm();
@@ -42,14 +48,14 @@ export default class Lotto {
     }
 
     onLoadLottoTicketForm() {
-        this.lottoTicketsForm.lottos = this.lottoTickets.tickets;
-        this.lottoTicketsForm.render();
-        this.lottoTicketsForm.mounted();
+        this.components.lottoTicketsForm.lottos = this.domains.lottoTickets.tickets;
+        this.components.lottoTicketsForm.render();
+        this.components.lottoTicketsForm.mounted();
     }
 
     onLoadWinningForm() {
-        this.winningLottoForm.render();
-        this.winningLottoForm.mounted();
+        this.components.winningLottoForm.render();
+        this.components.winningLottoForm.mounted();
     }
 
     onReward(winningNuber, bonusNumber) {
@@ -57,26 +63,26 @@ export default class Lotto {
         this.bonusNumber = bonusNumber;
 
         try {
-            this.lottoReward.compute({
-                lottos: this.lottoTickets.tickets,
+            this.domains.lottoReward.compute({
+                lottos: this.domains.lottoTickets.tickets,
                 winningNumbers: this.winningNumbers,
                 bonusNumber: this.bonusNumber,
             });
-            this.lottoModal.rate = this.lottoReward.rate;
-            this.lottoModal.winnings = this.lottoReward.winnings;
-            this.lottoModal.render();
-            this.lottoModal.mounted();
-            this.lottoModal.onClickOpenResultModalButton();
+            this.components.lottoModal.rate = this.domains.lottoReward.rate;
+            this.components.lottoModal.winnings = this.domains.lottoReward.winnings;
+            this.components.lottoModal.render();
+            this.components.lottoModal.mounted();
+            this.components.lottoModal.onClickOpenResultModalButton();
         } catch (error) {
             alert(error.message);
         }
     }
 
     onReset() {
-        this.lottoTickets = [];
-        this.lottoPurchaseForm.onReset();
-        this.lottoTicketsForm.onReset();
-        this.winningLottoForm.onReset();
-        this.lottoModal.onReset();
+        this.domains.lottoTickets = [];
+        this.components.lottoPurchaseForm.onReset();
+        this.components.lottoTicketsForm.onReset();
+        this.components.winningLottoForm.onReset();
+        this.components.lottoModal.onReset();
     }
 }
