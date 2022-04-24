@@ -1,4 +1,4 @@
-import { PurchseException } from "../exceptions/PurchaseException.js";
+import { PurchaseException } from "../exceptions/PurchaseException.js";
 import LottoMachine from "./LottoMachine.js";
 
 export default class LottoShop {
@@ -13,7 +13,7 @@ export default class LottoShop {
 
     static validate(price) {
         if (price < LottoShop.PURCHASE_MIN_PRICE || price > LottoShop.PURCHASE_MAX_PRICE)
-            throw PurchseException.outOfRangePurchasePrice();
-        if (price % LottoShop.LOTTO_UNIT !== 0) throw PurchseException.notMatchPurchaseUnit();
+            throw PurchaseException.outOfRangePurchasePrice();
+        if (price % LottoShop.LOTTO_UNIT !== 0) throw PurchaseException.notMatchPurchaseUnit();
     }
 }

@@ -1,15 +1,11 @@
-import WinningNumbers from "../domain/WinningNumbers.js";
+import LottoNumber from "../domain/LottoNumber.js";
 
 export const WinningNumberException = {
     outOfRangeWinningNumber() {
-        return new Error(
-            `당첨 번호는 ${WinningNumbers.WINNER_MIN_NUMBER} ~ ${WinningNumbers.WINNER_MAX_NUMBER} 사이로 입력해야합니다.`
-        );
+        return new Error(`당첨 번호는 ${LottoNumber.MIN} ~ ${LottoNumber.MAX} 사이로 입력해야합니다.`);
     },
     outOfRangeBonusNumber() {
-        return new Error(
-            `보너스 번호는 ${WinningNumbers.WINNER_MIN_NUMBER} ~ ${WinningNumbers.WINNER_MAX_NUMBER} 사이로 입력해야합니다.`
-        );
+        return new Error(`보너스 번호는 ${LottoNumber.MIN} ~ ${LottoNumber.MAX} 사이로 입력해야합니다.`);
     },
     notExistWinningNumber() {
         return new Error("입력되지 않은 당첨 번호가 존재합니다.");
